@@ -1,0 +1,37 @@
+import requests
+
+# Replace these with your GitHub details
+GITHUB_TOKEN = "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"  # Replace with your GitHub personal access token
+REPO_OWNER = "tiainfotek"  # Replace with your GitHub username or org
+REPO_NAME = "tredenze"  # Replace with your repository name
+FILE_PATH = "tredenze.txt"  # Path where the new file will be created
+FILE_CONTENT = "Hello, World!"  # Content for the new file
+COMMIT_MESSAGE = "Add new file"
+
+# GitHub API endpoint
+url = f"https://api.github.com/repos/{tiainfotek}/{tredenze}/contents/{tredenze}"
+
+# Encode file content in Base64 (GitHub API requires it)
+encoded_content = FILE_CONTENT.encode("utf-8")
+
+# API request payload
+payload = {
+    "message": COMMIT_MESSAGE,
+    "content": encoded_content.decode("utf-8"),
+}
+
+# Set headers
+headers = {
+    "Authorization": f"token {GITHUB_TOKEN}",
+    "Accept": "application/vnd.github.v3+json",
+}
+
+# Make the API request
+response = requests.put(url, json=payload, headers=headers)
+
+# Check response
+if response.status_code == 201:
+    print("File created successfully!")
+else:
+    print(f"Failed to create file: {response.status_code}")
+    print(response.json())
